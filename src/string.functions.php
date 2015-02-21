@@ -99,6 +99,7 @@ if (!function_exists('e')) {
 	 * Преобразование всех символов строки в HTML сущности
 	 *
 	 * @param  mixed $data
+	 * @param  string $charset кодировка
 	 * @return mixed
 	 */
 	function e($data, $charset = 'UTF-8')
@@ -119,16 +120,18 @@ if (!function_exists('camel_case')) {
 	 */
 	function camel_case($str, $first = false)
 	{
-		$str = preg_replace('/[^-_\w\s]/', '', $str);
-		$parts = preg_split('/[-_\s]/', $str);
-		$out = strtolower(array_shift($parts));
-		if ($first) {
-			$out = ucfirst($out);
-		}
-		foreach ($parts as $word) {
-			$out .= ucfirst(strtolower($word));
-		}
-		return $out;
+		return for_all($str, function($str) use($first) {
+			$str = preg_replace('/[^-_\w\s]/', '', $str);
+			$parts = preg_split('/[-_\s]/', $str);
+			$out = strtolower(array_shift($parts));
+			if ($first) {
+				$out = ucfirst($out);
+			}
+			foreach ($parts as $word) {
+				$out .= ucfirst(strtolower($word));
+			}
+			return $out;
+		});
 	}
 }
 
@@ -141,10 +144,12 @@ if (!function_exists('underscore')) {
 	 */
 	function underscore($str)
 	{
-		$str = preg_replace('/[^-_\w\s]/', '', $str);
-		$str = preg_replace('/([a-z])([A-Z])/', '$1 $2', $str);
-		$str = preg_replace('/[-\s]/', '_', $str);
-		return strtolower($str);
+		return for_all($str, function($str) {
+			$str = preg_replace('/[^-_\w\s]/', '', $str);
+			$str = preg_replace('/([a-z])([A-Z])/', '$1 $2', $str);
+			$str = preg_replace('/[-\s]/', '_', $str);
+			return strtolower($str);
+		});
 	}
 }
 
@@ -158,13 +163,15 @@ if (!function_exists('normalize_name')) {
 	 */
 	function normalize_name($name)
 	{
-		$name = ucwords(strtolower($name));
-		foreach (array('-', "'") as $delimiter) {
-			if (strpos($name, $delimiter) !== false) {
-				$name = implode($delimiter, array_map('ucfirst', explode($delimiter, $name)));
+		return for_all($name, function($name) {
+			$name = ucwords(strtolower($name));
+			foreach (array('-', "'") as $delimiter) {
+				if (strpos($name, $delimiter) !== false) {
+					$name = implode($delimiter, array_map('ucfirst', explode($delimiter, $name)));
+				}
 			}
-		}
-		return $name;
+			return $name;
+		});
 	}
 }
 
@@ -182,7 +189,7 @@ if (!function_exists('mb_str_replace')) {
 	 * @param mixed $replace строка на которую необходимо заменить искомое
 	 * @param mixed $subject строка в которой производится замена
 	 * @param int $count число произведенных замен в строке
-	 * @return mixed
+	 * @return string
 	 */
 	function mb_str_replace($search, $replace, $subject, &$count = 0)
 	{
@@ -438,11 +445,11 @@ if (!function_exists('last_implode')) {
 	 * @param string $last разделитель для последнего элемента массива
 	 * @return mixed|string
 	 */
-	function last_implode($sep, $data, $last = '')
+	function last_implode($sep, $data, $last = null)
 	{
 		$end = array_pop($data);
 		$out = implode($sep, $data);
-		if ($last == '') {
+		if (is_nop($last)) {
 			$last = $sep;
 		}
 		return empty($out) ? $end : $out . $last . $end;
@@ -467,7 +474,7 @@ if (!function_exists('first_word')) {
 	 * Получение первого слова из строки
 	 *
 	 * @param string $string
-	 * @return mixed
+	 * @return string
 	 */
 	function first_word($string)
 	{
