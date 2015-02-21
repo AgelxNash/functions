@@ -12,4 +12,11 @@ Contents:
     :maxdepth: 2
 
     array_functions
+    debug_functions
+    filesystem_functions
+    html_functions
+    math_functions
+    object_functions
+    request_functions
     string_functions
+    utils_functions

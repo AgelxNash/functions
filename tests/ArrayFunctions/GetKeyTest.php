@@ -32,14 +32,14 @@ class GetKeyTest extends \PHPUnit_Framework_TestCase
 
 	public function testKeyEValidSuccess()
 	{
-		$this->assertEquals(array(444, 555, 666), get_key($this->data, 'e', 'default', function($val){
+		$this->assertEquals(array(444, 555, 666), get_key($this->data, 'e', 'default', function ($val) {
 			return is_array($val);
 		}));
 	}
 
 	public function testKeyAANoValidError()
 	{
-		$this->assertEquals('default', get_key($this->data, 'aa', 'default', function($val){
+		$this->assertEquals('default', get_key($this->data, 'aa', 'default', function ($val) {
 			return !is_array($val);
 		}));
 	}

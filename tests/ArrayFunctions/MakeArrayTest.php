@@ -1,6 +1,7 @@
 <?php namespace ArrayFunctions;
 
-class MakeArrayTest extends \PHPUnit_Framework_TestCase{
+class MakeArrayTest extends \PHPUnit_Framework_TestCase
+{
 
 	protected $data = array(
 		'menutitle' => 'example',

@@ -1,4 +1,6 @@
-modx_evolution.IDEhelper.php
 .DS_Store
 /.idea
 ftpsync.settings
+/docs/_build
+composer.lock
+/vendor

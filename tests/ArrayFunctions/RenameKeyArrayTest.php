@@ -1,6 +1,7 @@
 <?php namespace ArrayFunctions;
 
-class RenameKeyArrayTest extends \PHPUnit_Framework_TestCase{
+class RenameKeyArrayTest extends \PHPUnit_Framework_TestCase
+{
 
 	protected $data = array(
 		'key' => 'val',
@@ -14,9 +15,9 @@ class RenameKeyArrayTest extends \PHPUnit_Framework_TestCase{
 	{
 		$out = array(
 			'[+key+]' => 'val',
-		    '[+subkey.a+]' => 'asd',
-		    '[+subkey.b+]' => 'zxc',
-		    '[+subkey+]' => ''
+			'[+subkey.a+]' => 'asd',
+			'[+subkey.b+]' => 'zxc',
+			'[+subkey+]' => ''
 		);
 		$this->assertEquals($out, rename_key_array($this->data, '[', ']', '+', '.'));
 	}

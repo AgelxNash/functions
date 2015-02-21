@@ -1,18 +1,20 @@
 {
-  "name": "agelxnash/functions",
-  "description": "Extra functions php",
-  "type": "library",
-  "autoload": {
-    "files": [
-      "src/array.functions.php",
-      "src/debug.functions.php",
-      "src/file.functions.php",
-      "src/object.functions.php",
-      "src/request.functions.php",
-	  "src/string.functions.php",
-	  "src/utils.functions.php"
-    ]
-  },
+    "name": "agelxnash/functions",
+    "description": "Extra functions php",
+    "type": "library",
+    "autoload": {
+        "files": [
+            "src/array.functions.php",
+            "src/debug.functions.php",
+            "src/filesystem.functions.php",
+            "src/html.functions.php",
+            "src/math.functions.php",
+            "src/object.functions.php",
+            "src/request.functions.php",
+            "src/string.functions.php",
+            "src/utils.functions.php"
+        ]
+    },
     "require-dev": {
         "phpunit/phpunit": "4.2.*"
     }
