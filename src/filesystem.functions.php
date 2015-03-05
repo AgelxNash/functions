@@ -39,7 +39,7 @@ if (!function_exists('dir_list_files')) {
 	function dir_list_files($path)
 	{
 		$dir = opendir($path);
-		$files = [];
+		$files = array();
 		if (!empty($dir)) {
 			while (false !== ($file = readdir($dir))) {
 				if ($file != '.' and $file != '..') {
