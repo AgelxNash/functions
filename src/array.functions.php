@@ -260,7 +260,7 @@ if (!function_exists('array_path_replace')) {
 	}
 }
 
-if (!function_exists('array_remove_blanks')) {
+if (!function_exists('array_clean')) {
 	/**
 	 * Удалить пустые элементы из массива
 	 *
