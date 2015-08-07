@@ -283,3 +283,21 @@ if (!function_exists('between_tag')) {
 		return $replace;
 	}
 }
+
+if (!function_exists('clear_html')){
+	/**
+	 * Удаление комментариев, переносов и лишних пробелов из html строки
+	 *
+	 * @param string $html HTML текст
+	 * @return string
+	 */
+	function clear_html($html){
+		$filters = array(
+            '/<!--([^\[|(<!)].*)-->/i'		=> '', // Remove HTML Comments (breaks with HTML5 Boilerplate)
+	        '/(?<!\S)\/\/\s*[^\r\n]*/'	=> '', // Remove comments in the form /* */
+	        '/\s{2,}/'			=> ' ', // Shorten multiple white spaces
+	        '/(\r?\n)/'			=> '', // Collapse new lines
+	    );
+		return is_scalar($html) ? preg_replace(array_keys($filters), array_values($filters), $html) : '';
+	}
+}
