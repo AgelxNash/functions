@@ -319,3 +319,18 @@ if(!function_exists('is_assoc')){
 		 	return is_array($array) ? (bool)count(array_filter(array_keys($array), 'is_string')) : false;
 	}
 }
+
+if(!function_exists('array_copy_key')){
+	/**
+	 * Определить ключи массива равыне значениям
+	 *
+	 * @param array $array исходный массив со значениями
+	 * @return array
+	 */
+    function array_copy_key(array $data = array()){
+		$data = array_filter($data, function($val){ 
+			return is_scalar($val); 
+		});
+        return array_combine($data, $data);
+    }
+}
