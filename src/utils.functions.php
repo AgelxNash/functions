@@ -524,3 +524,19 @@ if(!function_exists('validate_date')){
 		return $date = $validTime ? $datetime2->format($toFormat) : null;
 	}
 }
+if(!function_exists('format_bytes')){
+	/**
+	 * Преобразование из байт в другие порядки (кило, мега, гига) с добавлением префикса
+	 *
+	 * @param string $bytes Обрабатываемое число
+	 * @param string $$precision До какого числа после запятой округлять
+	 * @param array $suffixes Массив суффиксов
+	 * @return string
+	 */
+	function format_bytes($bytes, $precision = 2, $suffixes = array('Байт', 'Кбайт', 'Мбайт', 'Гбайт', 'Тбайт')) {
+		$bytes = (float)$bytes;
+		if(empty($bytes)) return 0;
+		$base = log($bytes, 1024);
+		return trim(round(pow(1024, $base - floor($base)), $precision) . ' ' .get_key($suffixes, (int)$base, '', 'is_scalar'));
+	}
+}
