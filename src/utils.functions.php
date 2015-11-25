@@ -529,7 +529,7 @@ if(!function_exists('format_bytes')){
 	 * Преобразование из байт в другие порядки (кило, мега, гига) с добавлением префикса
 	 *
 	 * @param string $bytes Обрабатываемое число
-	 * @param string $$precision До какого числа после запятой округлять
+	 * @param string $precision До какого числа после запятой округлять
 	 * @param array $suffixes Массив суффиксов
 	 * @return string
 	 */
@@ -539,4 +539,18 @@ if(!function_exists('format_bytes')){
 		$base = log($bytes, 1024);
 		return trim(round(pow(1024, $base - floor($base)), $precision) . ' ' .get_key($suffixes, (int)$base, '', 'is_scalar'));
 	}
+}
+
+if(!function_exists('ip_in_range')){
+	/**
+	 * Входит ли указанный IP в заданный диапазон
+	 *
+	 * @param string $ip IP клиента
+	 * @param string $lower Начальный IP диапазона
+	 * @param string $upper Конечный IP диапазона
+	 * @return bool
+	 */
+	function in_ip_range($ip, $lower, $upper){
+        return (ip2long($lower) <= ip2long($ip) && ip2long($upper) >= ip2long($ip)) ? TRUE : FALSE;
+    }
 }
