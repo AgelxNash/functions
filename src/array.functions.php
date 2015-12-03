@@ -184,7 +184,7 @@ if (!function_exists('array_filter')) {
 	{
 		$out = array();
 		foreach ($data as $k => $v) {
-			if (is_callable($filter) && $filter($v)){
+			if (is_callable($filter) && $filter($v, $k)){
 				$out[$k] = $v;
 			}
 		}
