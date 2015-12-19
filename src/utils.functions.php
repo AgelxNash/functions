@@ -541,6 +541,16 @@ if(!function_exists('format_bytes')){
 	}
 }
 
+if(!function_exists('format_microtime')){
+	/**
+	 * Форматирование microtime времени
+	 * @param string $time microtime время 
+	 * @param int $len Кол-во символов после точки
+	 */
+	function format_microtime($time, $len = 4){
+		return sprintf("%.".(int)$len."f", $time);
+	}
+}
 if(!function_exists('ip_in_range')){
 	/**
 	 * Входит ли указанный IP в заданный диапазон

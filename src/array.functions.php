@@ -334,3 +334,122 @@ if(!function_exists('array_copy_key')){
         return array_combine($data, $data);
     }
 }
+
+if(!function_exists('make_tree')){
+	/**
+	 * Helper function
+	 * @see http://gostash.it/ru/users/3191
+	 *
+	 * @param array   $tree   flat data, implementing a id/parent id (adjacency list) structure
+	 * @param mixed   $pid   root id, node to return
+	 * @param string  $parent  parent id index
+	 * @param string  $key   id index
+	 * @param string  $children   children index
+	 * @return array
+	 */
+	function make_tree($tree = array(), $pid = 0, $parent = 'pid', $key = 'id', $children = 'tree')
+	{
+		$result = array();
+
+		if (!empty($tree))
+		{
+			$m = array();
+
+			foreach ($tree as $e)
+			{
+				isset($m[$e[$parent]]) ?: $m[$e[$parent]] = array();
+				isset($m[$e[$key]]) ?: $m[$e[$key]] = array();
+
+				$m[$e[$parent]][] = array_merge($e, array($children => &$m[$e[$key]]));
+			}
+
+			$result = $m[$pid];
+		}
+
+		return $result;
+	}
+}
+
+if(!function_exists('array_chunk_vcolumn')){
+	/**
+	 * Разбиение массива на несколько частей с сохранением ключей, чтобы в каждой из этих частей было равное кол-во элементов 
+	 * Массив наполняется последовательно. Т.е. сначала наполняется данными первая часть, потом вторая и так, пока не закончатся данные.
+	 *
+	 * @see: http://gostash.it/ru/stashes/117 
+	 * @param array $input исходный массив
+	 * @param int $size кол-во частей
+	 */
+	function array_chunk_vcolumn(array $input, $size){
+		$data = array_fill(0, $size, array());
+		$size = ceil(count($input) / $size);
+		$i = 0;
+		$j = 0;
+		foreach ($input as $k => $v)
+		{
+			if (++$j > $size)
+			{
+				$i++;
+				$j = 1;
+			}
+			$data[$i][$k] = $v;
+		}
+		return $data;
+	}
+}
+
+if(!function_exists('array_chunk_hcolum')){
+	/**
+	 * Разбиение массива на несколько частей с сохранением ключей, чтобы в каждой из этих частей было равное кол-во элементов 
+	 * Массив наполняется равномерно. Т.е. в первую строку каждой части складывается по одному элементу из массива. Затем аналогичным образом во вторую и так, пока не закончатся данные.
+	 * 
+	 * @param array $input исходный массив
+	 * @param int $size кол-во частей
+	 */
+	function array_chunk_hcolumn(array $input, $size){
+		$data = array_fill(0, $size, array());
+		$j = -1;
+		foreach ($input as $k => $v)
+		{
+			if (++$j >= $size){
+				$j = 0;
+			}
+			$data[$j][$k] = $v;
+		}
+		return $data;
+	}
+}
+
+if(!function_exists('array_filter_keys')){
+	/**
+	 * Фильтрация массива по ключу
+	 *
+	 * @param array $array исходный массив
+	 * @param string $needle регулярное выражение для фильтрации ключей
+	 */
+	function array_filter_keys($array, $needle){
+		$matchedKeys = array_filter(array_keys($array), function($key) use ($needle){
+			return preg_match($needle, $key);
+		});
+		return array_intersect_key($array, array_flip($matchedKeys));
+	}
+}
+if(!function_exists('choose_chance')){
+	/***
+	 * Выбор ключа массива со определенной вероятность
+	 * choose_chance(array("a" => 10, "b" => 25, "c" => 25, "d" => 40));
+	 *
+	 * @see: http://gostash.it/ru/stashes/381
+	 * @param array $arr исходный массив
+	 */
+	function choose_chance(array $arr){
+		$rnd = mt_rand(1, array_sum($arr));
+		$i = 0;
+		foreach ($arr as $value => $chance) {
+			$i += $chance;
+			//$i = 51;
+			if ($rnd <= $i) {
+				return $value;
+			}
+		}
+	}
+}
