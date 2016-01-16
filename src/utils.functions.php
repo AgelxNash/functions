@@ -14,7 +14,7 @@ if (!function_exists('check_email')) {
 	function check_email($email, $dns = true)
 	{
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			list($user, $domain) = explode("@", $email, 2);
+			list(, $domain) = explode("@", $email, 2);
 			if (!$dns || ($dns && checkdnsrr($domain, "MX") && checkdnsrr($domain, "A"))) {
 				$error = false;
 			} else {
@@ -59,21 +59,17 @@ if (!function_exists('generate_password')) {
 		$pass = array();
 		for ($i = $len; $i > 0; $i--) {
 			switch ($data[rand(0, ($opt - 1))]) {
-				case 'A': {
+				case 'A': 
 					$tmp = rand(65, 90);
 					break;
-				}
-				case 'a': {
+				case 'a':
 					$tmp = rand(97, 122);
 					break;
-				}
-				case '0': {
+				case '0':
 					$tmp = rand(48, 57);
 					break;
-				}
-				default: {
-				$tmp = rand(33, 126);
-				}
+				default:
+					$tmp = rand(33, 126);
 			}
 			$pass[] = chr($tmp);
 		}
@@ -222,7 +218,6 @@ if (!function_exists('get_user_ip')) {
 	function get_user_ip($out = '127.0.0.1')
 	{
 		$_getEnv = function ($data) {
-			$out = false;
 			switch (true) {
 				case (isset($_SERVER[$data])):
 					$out = $_SERVER[$data];
@@ -244,7 +239,7 @@ if (!function_exists('get_user_ip')) {
 		};
 
 		//Порядок условий зависит от приоритетов
-		switch (true) {
+		switch (true === true) {
 			case ($tmp = $_getEnv('HTTP_COMING_FROM')):
 				$out = $tmp;
 				break;
@@ -348,7 +343,7 @@ if (!function_exists('whois_query')) {
 		);
 
 		if (!isset($servers[$ext])) {
-			die('Error: No matching nic server found!');
+			throw new ErrorException('No matching nic server found!');
 		}
 
 		$nic_server = $servers[$ext];
@@ -363,7 +358,7 @@ if (!function_exists('whois_query')) {
 			}
 			fclose($conn);
 		} else {
-			die('Error: Could not connect to ' . $nic_server . '!');
+			throw new ErrorException('Could not connect to ' . $nic_server . '!');
 		}
 
 		return $output;
@@ -380,14 +375,8 @@ if (!function_exists('copyright')) {
 	 */
 	function copyright($year, $sep = ' - ')
 	{
-		$out = '';
 		$y = date('Y');
-		if ($y != $year) {
-			$out = $year . $sep . $y;
-		} else {
-			$out = $year;
-		}
-		return $out;
+		return ($y != $year) ? ($year . $sep . $y) : $year;
 	}
 }
 
@@ -402,41 +391,37 @@ if (!function_exists('mime_file')) {
 	{
 		$out = null;
 		switch (true) {
-			case class_exists('\finfo'): {
+			case class_exists('\finfo'):
 				$fi = new \finfo(FILEINFO_MIME);
 				$out = $fi->file($fname);
 				break;
-			}
-			case function_exists('mime_content_type'): {
+			case function_exists('mime_content_type'):
 				list($out) = explode(';', @mime_content_type($fname));
 				break;
-			}
-			default: {
-			/**
-			 * @see: http://www.php.net/manual/ru/function.finfo-open.php#112617
-			 */
-			$fh = fopen($fname, 'rb');
-			if ($fh) {
-				$bytes6 = fread($fh, 6);
-				fclose($fh);
-				switch (true) {
-					case ($bytes6 === false):
-						break;
-					case (substr($bytes6, 0, 3) == "\xff\xd8\xff"):
-						$out = 'image/jpeg';
-						break;
-					case ($bytes6 == "\x89PNG\x0d\x0a"):
-						$out = 'image/png';
-						break;
-					case ($bytes6 == "GIF87a" || $bytes6 == "GIF89a"):
-						$out = 'image/gif';
-						break;
-					default:
-						$out = 'application/octet-stream';
-						break;
+			default:
+				/**
+				 * @see: http://www.php.net/manual/ru/function.finfo-open.php#112617
+				 */
+				$fh = fopen($fname, 'rb');
+				if ($fh) {
+					$bytes6 = fread($fh, 6);
+					fclose($fh);
+					switch (true) {
+						case ($bytes6 === false):
+							break;
+						case (substr($bytes6, 0, 3) == "\xff\xd8\xff"):
+							$out = 'image/jpeg';
+							break;
+						case ($bytes6 == "\x89PNG\x0d\x0a"):
+							$out = 'image/png';
+							break;
+						case ($bytes6 == "GIF87a" || $bytes6 == "GIF89a"):
+							$out = 'image/gif';
+							break;
+						default:
+							$out = 'application/octet-stream';
+					}
 				}
-			}
-			}
 		}
 		return $out;
 	}
@@ -452,25 +437,23 @@ if (!function_exists('image_size')) {
 	 */
 	function image_size($image, $mode = null)
 	{
-		//if(!empty($input) && file_exists($input)){
-		$size = @getimagesize($image);
-		$width = isset($size[0]) ? $size[0] : 0;
-		$height = isset($size[1]) ? $size[1] : 0;
-		//}
+		$width = $height = 0;
+		if(is_scalar($input) && is_file($input)){
+			$size = @getimagesize($image);
+			$width = isset($size[0]) ? $size[0] : 0;
+			$height = isset($size[1]) ? $size[1] : 0;
+		}
 		switch ($mode) {
 			case 'w':
-			case 'width': {
+			case 'width':
 				$out = $width;
 				break;
-			}
 			case 'h':
-			case 'height': {
+			case 'height':
 				$out = $height;
 				break;
-			}
-			default: {
+			default:
 				$out = array($width, $height);
-			}
 		}
 		return $out;
 	}
@@ -512,7 +495,7 @@ if(!function_exists('validate_date')){
 	 */
 	function validate_date($date, $fromFormat='Y-m-d', $toFormat = 'Y-m-d', Closure $validator = null){
 		$validTime = false;
-		$datetime1 = $datetime2 = $interval = null;
+		$datetime2 = null;
 		if(is_scalar($date)){
 			$datetime1 = new \DateTime("NOW");
 			$datetime2 = \DateTime::createFromFormat($fromFormat, $date);
@@ -521,7 +504,7 @@ if(!function_exists('validate_date')){
 				$validTime = is_callable($validator) ? (bool)$validator($datetime2, $interval) : true;
 			}
 		}
-		return $date = $validTime ? $datetime2->format($toFormat) : null;
+		return $validTime ? $datetime2->format($toFormat) : null;
 	}
 }
 if(!function_exists('format_bytes')){

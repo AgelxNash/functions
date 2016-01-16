@@ -91,14 +91,18 @@ if (!function_exists('point_info')){
 	 */
 	function point_info($key, $store = false, $clear = false){
 		static $marks = array();
+		$out = array();
+		
 		if(is_scalar($key) && !empty($key)){
 			if($store){
 				$marks[$key] = array(
 					'time' => microtime(true), 
 					'memory' => memory_get_usage()
 				);
-				$out['time'] = format_microtime($marks[$key]['time']);
-				$out = format_bytes($marks[$key]['memory']);
+				$out = array(
+					'memory' => format_bytes($marks[$key]['memory']),
+					'time' => format_microtime($marks[$key]['time'])
+				);
 			}else{
 				$out = get_key($marks, $key, array(
 					'time' => get_key($_SERVER, 'REQUEST_TIME_FLOAT', 0), 

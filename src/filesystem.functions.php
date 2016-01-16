@@ -42,7 +42,7 @@ if (!function_exists('dir_list_files')) {
 		$files = array();
 		if (!empty($dir)) {
 			while (false !== ($file = readdir($dir))) {
-				if ($file != '.' and $file != '..') {
+				if ($file != '.' && $file != '..') {
 					$files[] = $file;
 				}
 			}

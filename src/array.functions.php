@@ -11,19 +11,16 @@ if (!function_exists('for_all')) {
 	function for_all($data, Closure $callback)
 	{
 		switch (true) {
-			case is_array($data): {
+			case is_array($data): 
 				foreach ($data as &$val) {
 					$val = for_all($val, $callback);
 				}
 				break;
-			}
-			case is_scalar($data): {
+			case is_scalar($data):
 				$data = $callback($data);
 				break;
-			}
-			default: {
-			$data = null;
-			}
+			default:
+				$data = null;
 		}
 		return $data;
 	}
@@ -76,16 +73,14 @@ if (!function_exists('rename_key_array')) {
 				$key = $InsertPrefix . $key;
 				$val = null;
 				switch (true) {
-					case is_scalar($item): {
+					case is_scalar($item):
 						$val = $item;
 						break;
-					}
-					case is_array($item): {
+					case is_array($item):
 						$val = (is_scalar($sep) && $sep !== '') ? rename_key_array($item, $key . $sep, $InsertSuffix, '', $sep) : array();
 						$out = array_merge($out, $val);
 						$val = '';
 						break;
-					}
 				}
 				$out[$key . $InsertSuffix] = $val;
 			}
@@ -140,6 +135,7 @@ if (!function_exists('array_sort')) {
 		if (!isset($first[$sort_field])) {
 			return $arr;
 		}
+		$sort = array();
 		foreach ($arr as $key => $item) {
 			$sort[$key] = $item[$sort_field];
 		}
@@ -324,7 +320,7 @@ if(!function_exists('array_copy_key')){
 	/**
 	 * Определить ключи массива равыне значениям
 	 *
-	 * @param array $array исходный массив со значениями
+	 * @param array $data исходный массив со значениями
 	 * @return array
 	 */
     function array_copy_key(array $data = array()){

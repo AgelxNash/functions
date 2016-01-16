@@ -82,14 +82,12 @@ if (!function_exists('html_attrs')) {
 		if (is_array($attr)) {
 			foreach ($attr as $key => $val) {
 				switch(true){
-					case (is_scalar($val) && is_scalar($key)):{
+					case (is_scalar($val) && is_scalar($key)):
 						$html .= ' ' . $key . '="' . (in_array($key, $noEscape) ? $val : e($val)) . '"';
 						break;
-					}
-					case (is_bool($val) && $val == true && is_scalar($key)):{
+					case ($val === true && is_scalar($key)):
 						$html .= ' '.$key;
 						break;
-					}
 				}
 			}
 		}
@@ -208,7 +206,7 @@ if (!function_exists('stylesheet_link_tag')) {
 		$options['href'] = $css;
 		$options['rel'] = 'stylesheet';
 		$options['type'] = 'text/css';
-		return empty_tag('link', '', $options);
+		return empty_tag('link', $options);
 	}
 }
 

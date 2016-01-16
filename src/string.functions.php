@@ -297,7 +297,7 @@ if (!function_exists('strip_tags_smart')) {
 		if (is_array($s)) {
 			if ($_callback_type === 'strip_tags') {
 				$tag = strtolower($s[1]);
-				if ($_allowable_tags) {
+				if (!empty($_allowable_tags)) {
 					#tag with attributes
 					if (array_key_exists($tag, $_allowable_tags)) return $s[0];
 
@@ -309,7 +309,7 @@ if (!function_exists('strip_tags_smart')) {
 					}
 				}
 				if ($tag === 'br') return "\r\n";
-				if ($_para_tags && array_key_exists($tag, $_para_tags)) return "\r\n\r\n";
+				if (!empty($_para_tags) && array_key_exists($tag, $_para_tags)) return "\r\n\r\n";
 				return '';
 			}
 			trigger_error('Unknown callback type "' . $_callback_type . '"!', E_USER_ERROR);
@@ -352,7 +352,7 @@ if (!function_exists('strip_tags_smart')) {
            >
          /sxSX',
 		);
-		if ($pair_tags) {
+		if (!empty($pair_tags)) {
 			#парные таги вместе с содержимым:
 			foreach ($pair_tags as $k => $v) $pair_tags[$k] = preg_quote($v, '/');
 			$patterns[] = '/ <((?i:' . implode('|', $pair_tags) . '))' . $re_attrs_fast_safe . '(?<!\/)>
@@ -384,9 +384,9 @@ if (!function_exists('strip_tags_smart')) {
 						В библиотеке PCRE для PHP \s - это любой пробельный символ, а именно класс символов [\x09\x0a\x0c\x0d\x20\xa0] или, по другому, [\t\n\f\r \xa0]
 						Если \s используется с модификатором /u, то \s трактуется как [\x09\x0a\x0c\x0d\x20]
 						Браузер не делает различия между пробельными символами, друг за другом подряд идущие символы воспринимаются как один
+							$s2 = str_replace(array("\r", "\n", "\t"), ' ', $s2);
+							$s2 = strtr($s2, "\x09\x0a\x0c\x0d", '    ');
 						*/
-						#$s2 = str_replace(array("\r", "\n", "\t"), ' ', $s2);
-						#$s2 = strtr($s2, "\x09\x0a\x0c\x0d", '    ');
 						$s2 = preg_replace('/  [\x09\x0a\x0c\x0d]++
                                          | <((?i:pre|textarea))' . $re_attrs_fast_safe . '(?<!\/)>
                                            .+?
@@ -400,10 +400,10 @@ if (!function_exists('strip_tags_smart')) {
 					}
 
 					#массив тагов, которые не будут вырезаны
-					if ($allowable_tags) $_allowable_tags = array_flip($allowable_tags);
+					if (!empty($allowable_tags)) $_allowable_tags = array_flip($allowable_tags);
 
 					#парные таги, которые будут восприниматься как параграфы
-					if ($para_tags) $_para_tags = array_flip($para_tags);
+					if (!empty($para_tags)) $_para_tags = array_flip($para_tags);
 				}
 			}#if
 
