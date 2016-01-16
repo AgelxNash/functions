@@ -438,7 +438,7 @@ if (!function_exists('image_size')) {
 	function image_size($image, $mode = null)
 	{
 		$width = $height = 0;
-		if(is_scalar($input) && is_file($input)){
+		if(is_scalar($image) && is_file($image)){
 			$size = @getimagesize($image);
 			$width = isset($size[0]) ? $size[0] : 0;
 			$height = isset($size[1]) ? $size[1] : 0;
