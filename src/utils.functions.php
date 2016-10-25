@@ -264,11 +264,9 @@ if (!function_exists('get_user_ip')) {
 			case (!empty($_SERVER['REMOTE_ADDR'])):
 				$out = $_SERVER['REMOTE_ADDR'];
 				break;
-			default:
-				$out = false;
 		}
 		unset($tmp);
-		return (false !== $out && preg_match('|^(?:[0-9]{1,3}\.){3,3}[0-9]{1,3}$|', $out, $matches)) ? $out : false;
+		return (is_scalar($out) && preg_match('|^(?:[0-9]{1,3}\.){3,3}[0-9]{1,3}$|', $out, $matches)) ? $out : false;
 	}
 }
 
