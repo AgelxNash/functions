@@ -35,7 +35,7 @@ if (!function_exists('dd')) {
 	function dd()
 	{
 		ob_clean();
-		array_map(function ($x) {
+		array_map(function($x) {
 			var_dump($x);
 		}, func_get_args());
 		die;
@@ -113,14 +113,14 @@ if (!function_exists('point_info')){
 			}
 		}
 	
-		if($clear){
+		if ($clear) {
 			$marks = array();
 		}
 		return $out;
 	}
 }
 
-if(!function_exists('call_private_method')){
+if (!function_exists('call_private_method')) {
 	/**
 	 * Возможность вызвать любой метод (даже приватный)
 	 * call_private_method($myObject, 'myMethod', array('myValue1', 'myValue2'));

@@ -9,7 +9,7 @@ if (!function_exists('check_email')) {
 	 *
 	 * @param string $email проверяемый email
 	 * @param bool $dns проверять ли DNS записи
-	 * @return bool|string Результат проверки почтового ящика
+	 * @return false|string Результат проверки почтового ящика
 	 */
 	function check_email($email, $dns = true)
 	{
@@ -17,10 +17,10 @@ if (!function_exists('check_email')) {
 			list(, $domain) = explode("@", $email, 2);
 			if (!$dns || ($dns && checkdnsrr($domain, "MX") && checkdnsrr($domain, "A"))) {
 				$error = false;
-			} else {
+			}else {
 				$error = 'dns';
 			}
-		} else {
+		}else {
 			$error = 'format';
 		}
 		return $error;
@@ -217,7 +217,7 @@ if (!function_exists('get_user_ip')) {
 	 */
 	function get_user_ip($out = '127.0.0.1')
 	{
-		$_getEnv = function ($data) {
+		$_getEnv = function($data) {
 			switch (true) {
 				case (isset($_SERVER[$data])):
 					$out = $_SERVER[$data];
@@ -355,7 +355,7 @@ if (!function_exists('whois_query')) {
 				$output .= fgets($conn, 128);
 			}
 			fclose($conn);
-		} else {
+		}else {
 			throw new ErrorException('Could not connect to ' . $nic_server . '!');
 		}
 
@@ -436,7 +436,7 @@ if (!function_exists('image_size')) {
 	function image_size($image, $mode = null)
 	{
 		$width = $height = 0;
-		if(is_scalar($image) && is_file($image)){
+		if (is_scalar($image) && is_file($image)) {
 			$size = @getimagesize($image);
 			$width = isset($size[0]) ? $size[0] : 0;
 			$height = isset($size[1]) ? $size[1] : 0;
@@ -475,7 +475,7 @@ if (!function_exists('plural')) {
 	}
 }
 
-if(!function_exists('validate_date')){
+if (!function_exists('validate_date')) {
 	/**
 	 * Проверка валидности даты
 	 *
@@ -491,13 +491,13 @@ if(!function_exists('validate_date')){
 	 * @param Closure $validator метод для дополнительной проверки даты
 	 * @return null|string
 	 */
-	function validate_date($date, $fromFormat='Y-m-d', $toFormat = 'Y-m-d', Closure $validator = null){
+	function validate_date($date, $fromFormat = 'Y-m-d', $toFormat = 'Y-m-d', Closure $validator = null) {
 		$validTime = false;
 		$datetime2 = null;
-		if(is_scalar($date)){
+		if (is_scalar($date)) {
 			$datetime1 = new \DateTime("NOW");
 			$datetime2 = \DateTime::createFromFormat($fromFormat, $date);
-			if($datetime2 instanceof \DateTime){
+			if ($datetime2 instanceof \DateTime) {
 				$interval = $datetime1->diff($datetime2);
 				$validTime = is_callable($validator) ? (bool)$validator($datetime2, $interval) : true;
 			}
@@ -505,18 +505,20 @@ if(!function_exists('validate_date')){
 		return $validTime ? $datetime2->format($toFormat) : null;
 	}
 }
-if(!function_exists('format_bytes')){
+if (!function_exists('format_bytes')) {
 	/**
 	 * Преобразование из байт в другие порядки (кило, мега, гига) с добавлением префикса
 	 *
 	 * @param string $bytes Обрабатываемое число
-	 * @param string $precision До какого числа после запятой округлять
+	 * @param integer $precision До какого числа после запятой округлять
 	 * @param array $suffixes Массив суффиксов
 	 * @return string
 	 */
 	function format_bytes($bytes, $precision = 2, $suffixes = array('Байт', 'Кбайт', 'Мбайт', 'Гбайт', 'Тбайт')) {
 		$bytes = (float)$bytes;
-		if(empty($bytes)) return 0;
+		if(empty($bytes)) {
+			return 0;
+		}
 		$base = log($bytes, 1024);
 		return trim(round(pow(1024, $base - floor($base)), $precision) . ' ' .get_key($suffixes, (int)$base, '', 'is_scalar'));
 	}
@@ -542,6 +544,6 @@ if(!function_exists('ip_in_range')){
 	 * @return bool
 	 */
 	function in_ip_range($ip, $lower, $upper){
-        return (ip2long($lower) <= ip2long($ip) && ip2long($upper) >= ip2long($ip)) ? TRUE : FALSE;
-    }
+		return (ip2long($lower) <= ip2long($ip) && ip2long($upper) >= ip2long($ip)) ? TRUE : FALSE;
+	}
 }
