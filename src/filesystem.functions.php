@@ -54,12 +54,12 @@ if (!function_exists('dir_list_files')) {
 
 if (!function_exists('sanitize_path')) {
 	/**
-	* Удаление из строки символов, определяющих перемещение вверх по дереву каталогов
-	* @see https://github.com/modxcms/revolution/commit/10248d06ebb7c933d33129272623d0a64d528a82#diff-9ec30f895e27297f4307c80efb483bb8
-	*
-	* @param string $path путь к папке
-	* @return string
-	*/
+	 * Удаление из строки символов, определяющих перемещение вверх по дереву каталогов
+	 * @see https://github.com/modxcms/revolution/commit/10248d06ebb7c933d33129272623d0a64d528a82#diff-9ec30f895e27297f4307c80efb483bb8
+	 *
+	 * @param string $path путь к папке
+	 * @return string
+	 */
 	function sanitize_path($path ){
 		return preg_replace(array("/\.*[\/|\\\]/i", "/[\/|\\\]+/i"), array('/', '/'), $path);
 	}

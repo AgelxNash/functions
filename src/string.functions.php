@@ -9,7 +9,7 @@ if (!function_exists('mb_lcfirst') && extension_loaded('mbstring')) {
 	 */
 	function mb_lcfirst($data, $charset = 'UTF-8')
 	{
-		return for_all($data, function ($el) use ($charset) {
+		return for_all($data, function($el) use ($charset) {
 			$str = one_space($el);
 			return mb_strtolower(mb_substr($str, 0, 1, $charset), $charset) . mb_substr($str, 1, mb_strlen($str), $charset);
 		});
@@ -26,7 +26,7 @@ if (!function_exists('mb_ucfirst') && extension_loaded('mbstring')) {
 	 */
 	function mb_ucfirst($data, $charset = 'UTF-8')
 	{
-		return for_all($data, function ($el) use ($charset) {
+		return for_all($data, function($el) use ($charset) {
 			$str = one_space($el);
 			return mb_strtoupper(mb_substr($str, 0, 1, $charset), $charset) . mb_substr($str, 1, mb_strlen($str), $charset);
 		});
@@ -42,7 +42,7 @@ if (!function_exists('one_space')) {
 	 */
 	function one_space($data)
 	{
-		return for_all($data, function ($el) {
+		return for_all($data, function($el) {
 			return preg_replace('/[ \t]+/', ' ', $el);
 		});
 	}
@@ -57,7 +57,7 @@ if (!function_exists('one_new_line')) {
 	 */
 	function one_new_line($data)
 	{
-		return for_all($data, function ($el) {
+		return for_all($data, function($el) {
 			return preg_replace('/(\R)+/', '$1', $el);
 		});
 	}
@@ -72,7 +72,7 @@ if (!function_exists('full_one_space')) {
 	 */
 	function full_one_space($data)
 	{
-		return for_all($data, function ($el) {
+		return for_all($data, function($el) {
 			return preg_replace('/\s+/', ' ', $el);
 		});
 	}
@@ -88,7 +88,7 @@ if (!function_exists('e_decode')) {
 	 */
 	function e_decode($data, $charset = 'UTF-8')
 	{
-		return for_all($data, function ($el) use ($charset) {
+		return for_all($data, function($el) use ($charset) {
 			return one_space(str_replace("\xC2\xA0", ' ', html_entity_decode($el, ENT_COMPAT, $charset)));
 		});
 	}
@@ -104,7 +104,7 @@ if (!function_exists('e')) {
 	 */
 	function e($data, $charset = 'UTF-8')
 	{
-		return for_all($data, function ($el) use ($charset) {
+		return for_all($data, function($el) use ($charset) {
 			return one_space(htmlentities($el, ENT_COMPAT | ENT_SUBSTITUTE, $charset, false));
 		});
 	}
@@ -205,7 +205,7 @@ if (!function_exists('mb_str_replace')) {
 				$count += count($parts) - 1;
 				$subject = implode($replacements[$key], $parts);
 			}
-		} else {
+		}else {
 			// Call mb_str_replace for each subject in array, recursively
 			foreach ($subject as $key => $value) {
 				$subject[$key] = mb_str_replace($search, $replace, $value, $count);
@@ -231,7 +231,7 @@ if (!function_exists('mb_trim_word')) {
 		$text = mb_substr($text, 0, $len + 1, $encoding);
 		if (mb_substr($text, -1, null, $encoding) == ' ') {
 			$out = trim($text);
-		} else {
+		}else {
 			$out = mb_substr($text, 0, mb_strripos($text, ' ', null, $encoding), $encoding);
 		}
 		return preg_replace("/(([\.,\-:!?;\s])|(&\w+;))+$/ui", "", $out);
@@ -299,26 +299,38 @@ if (!function_exists('strip_tags_smart')) {
 				$tag = strtolower($s[1]);
 				if (!empty($_allowable_tags)) {
 					#tag with attributes
-					if (array_key_exists($tag, $_allowable_tags)) return $s[0];
+					if (array_key_exists($tag, $_allowable_tags)) {
+						return $s[0];
+					}
 
 					#tag without attributes
 					if (array_key_exists('<' . $tag . '>', $_allowable_tags)) {
-						if (substr($s[0], 0, 2) === '</') return '</' . $tag . '>';
-						if (substr($s[0], -2) === '/>') return '<' . $tag . ' />';
+						if (substr($s[0], 0, 2) === '</') {
+							return '</' . $tag . '>';
+						}
+						if (substr($s[0], -2) === '/>') {
+							return '<' . $tag . ' />';
+						}
 						return '<' . $tag . '>';
 					}
 				}
-				if ($tag === 'br') return "\r\n";
-				if (!empty($_para_tags) && array_key_exists($tag, $_para_tags)) return "\r\n\r\n";
+				if ($tag === 'br') {
+					return "\r\n";
+				}
+				if (!empty($_para_tags) && array_key_exists($tag, $_para_tags)) {
+					return "\r\n\r\n";
+				}
 				return '';
 			}
 			trigger_error('Unknown callback type "' . $_callback_type . '"!', E_USER_ERROR);
 		}
 
-		if (($pos = strpos($s, '<')) === false || strpos($s, '>', $pos) === false)  #speed improve
+		if (($pos = strpos($s, '<')) === false || strpos($s, '>', $pos) === false) {
+			#speed improve
 		{
 			#tags are not found
 			return $s;
+		}
 		}
 
 		$length = strlen($s);
@@ -334,7 +346,7 @@ if (!function_exists('strip_tags_smart')) {
                 ~sxSX';
 
 		$patterns = array(
-			'/<([\?\%]) .*? \\1>/sxSX',     #встроенный PHP, Perl, ASP код
+			'/<([\?\%]) .*? \\1>/sxSX', #встроенный PHP, Perl, ASP код
 			'/<\!\[CDATA\[ .*? \]\]>/sxSX', #блоки CDATA
 			#'/<\!\[  [\x20\r\n\t]* [a-zA-Z] .*?  \]>/sxSX',  #:DEPRECATED: MS Word таги типа <![if! vml]>...<![endif]>
 
@@ -354,7 +366,9 @@ if (!function_exists('strip_tags_smart')) {
 		);
 		if (!empty($pair_tags)) {
 			#парные таги вместе с содержимым:
-			foreach ($pair_tags as $k => $v) $pair_tags[$k] = preg_quote($v, '/');
+			foreach ($pair_tags as $k => $v) {
+				$pair_tags[$k] = preg_quote($v, '/');
+			}
 			$patterns[] = '/ <((?i:' . implode('|', $pair_tags) . '))' . $re_attrs_fast_safe . '(?<!\/)>
                          .*?
                          <\/(?i:\\1)' . $re_attrs_fast_safe . '>
@@ -400,10 +414,14 @@ if (!function_exists('strip_tags_smart')) {
 					}
 
 					#массив тагов, которые не будут вырезаны
-					if (!empty($allowable_tags)) $_allowable_tags = array_flip($allowable_tags);
+					if (!empty($allowable_tags)) {
+						$_allowable_tags = array_flip($allowable_tags);
+					}
 
 					#парные таги, которые будут восприниматься как параграфы
-					if (!empty($para_tags)) $_para_tags = array_flip($para_tags);
+					if (!empty($para_tags)) {
+						$_para_tags = array_flip($para_tags);
+					}
 				}
 			}#if
 
@@ -418,11 +436,16 @@ if (!function_exists('strip_tags_smart')) {
 				}
 			}
 
-			if ($s === $s2) break;
+			if ($s === $s2) {
+				break;
+			}
 			$s = $s2;
 			$i++;
 		}#while
-		if ($i >= $max) $s = strip_tags($s); #too many cycles for replace...
+		if ($i >= $max) {
+			$s = strip_tags($s);
+		}
+		#too many cycles for replace...
 
 		if ($is_format_spaces && strlen($s) !== $length) {
 			#remove a duplicate spaces

@@ -28,13 +28,13 @@ if (!function_exists('html_table')) {
 			$thead = $table['head'];
 		} elseif (is_array($table)) {
 			$thead = html_implode($table, 'th');
-		} else {
+		}else {
 			$thead = $table;
 		}
-		if(!empty($thead)){
+		if (!empty($thead)) {
 			$thead = html_wrap('thead', html_wrap('tr', $thead));
 		}
-		return html_wrap('table', $thead.html_wrap('tbody', (is_array($rows) ? html_implode($rows, 'tr') : $rows)), $attr);
+		return html_wrap('table', $thead . html_wrap('tbody', (is_array($rows) ? html_implode($rows, 'tr') : $rows)), $attr);
 	}
 }
 
@@ -118,20 +118,20 @@ if (!function_exists('make_options')) {
 				);
 			}
 			$val = get_key($value, 'value', '');
-			if(is_int($title)){
+			if (is_int($title)) {
 				$title = get_key($value, 'value', $title);
 			}
 			if ((string)$val === (string)$current) {
 				$value['selected'] = true;
 				$selected = true;
-			}else{
+			}else {
 				unset($value['selected']);
 			}
 
 			$options[$title] = $value;
 		}
-		foreach($options as $title => $attr){
-			if(!$selected && get_key($attr, 'value', '') == $default){
+		foreach ($options as $title => $attr) {
+			if (!$selected && get_key($attr, 'value', '') == $default) {
 				$attr['selected'] = true;
 			}
 			$out .= html_wrap('option', $title, $attr);
@@ -269,12 +269,12 @@ if (!function_exists('between_tag')) {
 						$subText = substr($m[2], 0, $subTmp[1]) . $closeTag;
 						$html = substr($m[2], $subTmp[1] + strlen($closeTag));
 						$replace[] = array($m[1], $subText, $closeTag);
-					} else {
+					}else {
 						$replace[] = array($m[1], $m[2], '');
 						$html = '';
 					}
 				}
-			} else {
+			}else {
 				$html = '';
 			}
 		} while (!empty($html));
@@ -282,20 +282,20 @@ if (!function_exists('between_tag')) {
 	}
 }
 
-if (!function_exists('clear_html')){
+if (!function_exists('clear_html')) {
 	/**
 	 * Удаление комментариев, переносов и лишних пробелов из html строки
 	 *
 	 * @param string $html HTML текст
 	 * @return string
 	 */
-	function clear_html($html){
+	function clear_html($html) {
 		$filters = array(
-            '/<!--([^\[|(<!)].*)-->/i'		=> '', // Remove HTML Comments (breaks with HTML5 Boilerplate)
-	        '/(?<!\S)\/\/\s*[^\r\n]*/'	=> '', // Remove comments in the form /* */
-	        '/\s{2,}/'			=> ' ', // Shorten multiple white spaces
-	        '/(\r?\n)/'			=> '', // Collapse new lines
-	    );
+			'/<!--([^\[|(<!)].*)-->/i'		=> '', // Remove HTML Comments (breaks with HTML5 Boilerplate)
+			'/(?<!\S)\/\/\s*[^\r\n]*/'	=> '', // Remove comments in the form /* */
+			'/\s{2,}/'			=> ' ', // Shorten multiple white spaces
+			'/(\r?\n)/'			=> '', // Collapse new lines
+		);
 		return is_scalar($html) ? preg_replace(array_keys($filters), array_values($filters), $html) : '';
 	}
 }
