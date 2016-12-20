@@ -552,25 +552,25 @@ if(!function_exists('make_csv')){
 	/**
 	 * Формирование правильной CSV строки
 	 *
-     * @see: https://stackoverflow.com/questions/3933668/convert-array-into-csv
+     	 * @see: https://stackoverflow.com/questions/3933668/convert-array-into-csv
 	 * @param array $data Массив с данными
 	 * @return string
-     */
-    function make_csv($data){
-        // Create a stream opening it with read / write mode
-        $stream = fopen('data://text/plain,' . "", 'w+');
+	 */
+	function make_csv($data, $separator = ","){
+        	// Create a stream opening it with read / write mode
+        	$stream = fopen('data://text/plain,' . "", 'w+');
 
-        // Iterate over the data, writting each line to the text stream
-        fputcsv($stream, $data);
+	        // Iterate over the data, writting each line to the text stream
+        	fputcsv($stream, $data, $separator);
 
-        // Rewind the stream
-        rewind($stream);
+        	// Rewind the stream
+        	rewind($stream);
 
-        // You can now echo it's content
-        $out = stream_get_contents($stream);
+        	// You can now echo it's content
+        	$out = stream_get_contents($stream);
 
-        // Close the stream
-        fclose($stream);
-        return $out;
-    }
+        	// Close the stream
+        	fclose($stream);
+        	return $out;
+    	}
 }
