@@ -1,4 +1,22 @@
 <?php
+if (!function_exists('supports_ansi_colors')) {	
+	/**
+	* Функция позволяет узнать, поддерживает ли консоль цвета и другое форматирование.
+	* @see: https://gostash.it/ru/stashes/1601-podderzivaet-li-konsol-cveta
+	* @return bool Результат проверки
+	* 
+	* DIRECTORY_SEPARATOR === '\\' — проверка на Windows.
+	* getenv('ANSICON') !== false — проверка запуска через ANSICON.
+	* getenv('ConEmuANSI') === 'ON' — проверка запуска через ConEmu.
+	* function_exists('posix_isatty') && @posix_isatty(\STDOUT) — проверка на интерактивный терминал UNIX.
+	*/
+	function supports_ansi_colors(){
+		return DIRECTORY_SEPARATOR === '\\'
+			? getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON'
+			: function_exists('posix_isatty') && @posix_isatty(\STDOUT);
+	}
+}
+
 if (!function_exists('check_email')) {
 	/**
 	 * Проверка строки с email на наличие ошибок
