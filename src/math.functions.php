@@ -23,14 +23,14 @@ if (!function_exists('plus_minus')) {
 	 */
 	function plus_minus($num, $plus = '+', $minus = '-')
 	{
-		if(!is_scalar($num)){
+		if (!is_scalar($num)) {
 			$num = 0;
 		}
-		if($num < 0){
+		if ($num < 0) {
 			$out = $minus . abs($num);
-		}else if ($num > 0){
+		}else if ($num > 0) {
 			$out = $plus . abs($num);
-		}else{
+		}else {
 			$out = 0;
 		}
 		return $out;
@@ -62,12 +62,12 @@ if (!function_exists('clean_ids')) {
 	function clean_ids($IDs, $sep = ',', $ignore = array())
 	{
 		$out = array();
-		if ( ! is_array($IDs)) {
+		if (!is_array($IDs)) {
 			$IDs = is_scalar($IDs) ? explode($sep, $IDs) : array();
 		}
 		foreach ($IDs as $item) {
 			$item = trim($item);
-			if ((is_scalar($item) && (int)$item >= 0) && (empty($ignore) || !in_array((int)$item, $ignore, true))){
+			if ((is_scalar($item) && (int)$item >= 0) && (empty($ignore) || !in_array((int)$item, $ignore, true))) {
 				$out[] = (int)$item;
 			}
 		}

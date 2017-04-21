@@ -112,7 +112,7 @@ if (!function_exists('make_array')) {
 						$workArray = &$workArray[$subKey];
 					}
 				}
-			} else {
+			}else {
 				$out = $data;
 			}
 		}
@@ -180,7 +180,7 @@ if (!function_exists('array_filter')) {
 	{
 		$out = array();
 		foreach ($data as $k => $v) {
-			if (is_callable($filter) && $filter($v, $k)){
+			if (is_callable($filter) && $filter($v, $k)) {
 				$out[$k] = $v;
 			}
 		}
@@ -202,7 +202,7 @@ if (!function_exists('array_path')) {
 	{
 		$path = explode($separator, $path);
 		while ($key = array_shift($path)) {
-			if (!isset($array[$key])){
+			if (!isset($array[$key])) {
 				return $default;
 			}
 			$array = $array[$key];
@@ -226,7 +226,9 @@ if (!function_exists('array_path_unset')) {
 		$path = explode($separator, $path);
 		while (count($path) > 1) {
 			$key = array_shift($path);
-			if (!isset($tmp[$key])) return;
+			if (!isset($tmp[$key])) {
+				return;
+			}
 			$tmp = &$tmp[$key];
 		}
 		unset($tmp[array_shift($path)]);
@@ -249,7 +251,9 @@ if (!function_exists('array_path_replace')) {
 		$path = explode($separator, $path);
 		while (count($path) > 1) {
 			$key = array_shift($path);
-			if (!isset($tmp[$key])) $tmp[$key] = array();
+			if (!isset($tmp[$key])) {
+				$tmp[$key] = array();
+			}
 			$tmp = &$tmp[$key];
 		}
 		$tmp[array_shift($path)] = $value;
@@ -270,14 +274,14 @@ if (!function_exists('array_clean')) {
 	}
 }
 
-if( !function_exists('array_shuffle')){
+if (!function_exists('array_shuffle')) {
 	/**
 	 * Перемешать массив в случайном порядке с сохранением ключей
 	 *
 	 * @param array $data массив с данными
 	 * @return bool результат сортировки массива
 	 */
-	function array_shuffle(array &$data = array()){
+	function array_shuffle(array &$data = array()) {
 		return uksort($data, function() { return rand() > rand(); });
 	}
 }
@@ -297,14 +301,14 @@ if (!function_exists('array_random')) {
 			if ((int)$count > 0) {
 				$data = current(array_chunk($data, (int)$count, true));
 			}
-		} else {
+		}else {
 			$data = array();
 		}
 		return $data;
 	}
 }
 
-if(!function_exists('is_assoc')){
+if (!function_exists('is_assoc')) {
 	/**
 	 * Является ли массив ассоциативным
 	 *
@@ -323,12 +327,12 @@ if(!function_exists('array_copy_key')){
 	 * @param array $data исходный массив со значениями
 	 * @return array
 	 */
-    function array_copy_key(array $data = array()){
+	function array_copy_key(array $data = array()){
 		$data = array_filter($data, function($val){ 
 			return is_scalar($val); 
 		});
-        return array_combine($data, $data);
-    }
+		return array_combine($data, $data);
+	}
 }
 
 if(!function_exists('make_tree')){
@@ -366,7 +370,7 @@ if(!function_exists('make_tree')){
 	}
 }
 
-if(!function_exists('array_chunk_vcolumn')){
+if (!function_exists('array_chunk_vcolumn')) {
 	/**
 	 * Разбиение массива на несколько частей с сохранением ключей, чтобы в каждой из этих частей было равное кол-во элементов 
 	 * Массив наполняется последовательно. Т.е. сначала наполняется данными первая часть, потом вторая и так, пока не закончатся данные.
@@ -375,7 +379,7 @@ if(!function_exists('array_chunk_vcolumn')){
 	 * @param array $input исходный массив
 	 * @param int $size кол-во частей
 	 */
-	function array_chunk_vcolumn(array $input, $size){
+	function array_chunk_vcolumn(array $input, $size) {
 		$data = array_fill(0, $size, array());
 		$size = ceil(count($input) / $size);
 		$i = 0;
@@ -393,7 +397,7 @@ if(!function_exists('array_chunk_vcolumn')){
 	}
 }
 
-if(!function_exists('array_chunk_hcolumn')){
+if (!function_exists('array_chunk_hcolumn')) {
 	/**
 	 * Разбиение массива на несколько частей с сохранением ключей, чтобы в каждой из этих частей было равное кол-во элементов 
 	 * Массив наполняется равномерно. Т.е. в первую строку каждой части складывается по одному элементу из массива. Затем аналогичным образом во вторую и так, пока не закончатся данные.
@@ -401,12 +405,12 @@ if(!function_exists('array_chunk_hcolumn')){
 	 * @param array $input исходный массив
 	 * @param int $size кол-во частей
 	 */
-	function array_chunk_hcolumn(array $input, $size){
+	function array_chunk_hcolumn(array $input, $size) {
 		$data = array_fill(0, $size, array());
 		$j = -1;
 		foreach ($input as $k => $v)
 		{
-			if (++$j >= $size){
+			if (++$j >= $size) {
 				$j = 0;
 			}
 			$data[$j][$k] = $v;
@@ -415,21 +419,21 @@ if(!function_exists('array_chunk_hcolumn')){
 	}
 }
 
-if(!function_exists('array_filter_keys')){
+if (!function_exists('array_filter_keys')) {
 	/**
 	 * Фильтрация массива по ключу
 	 *
 	 * @param array $array исходный массив
 	 * @param string $needle регулярное выражение для фильтрации ключей
 	 */
-	function array_filter_keys($array, $needle){
+	function array_filter_keys($array, $needle) {
 		$matchedKeys = array_filter(array_keys($array), function($key) use ($needle){
 			return preg_match($needle, $key);
 		});
 		return array_intersect_key($array, array_flip($matchedKeys));
 	}
 }
-if(!function_exists('choose_chance')){
+if (!function_exists('choose_chance')) {
 	/***
 	 * Выбор ключа массива со определенной вероятность
 	 * choose_chance(array("a" => 10, "b" => 25, "c" => 25, "d" => 40));
@@ -437,7 +441,7 @@ if(!function_exists('choose_chance')){
 	 * @see: http://gostash.it/ru/stashes/381
 	 * @param array $arr исходный массив
 	 */
-	function choose_chance(array $arr){
+	function choose_chance(array $arr) {
 		$rnd = mt_rand(1, array_sum($arr));
 		$i = 0;
 		foreach ($arr as $value => $chance) {
