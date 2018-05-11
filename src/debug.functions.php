@@ -148,9 +148,9 @@ if (! function_exists('format_exception')) {
 	 * @param Exception $exception обрабатываемое исключение
 	 * @param bool $trace включить ли трассировку в отчет
 	 * @param null|string $file Файл в котором вызвана обработка исключения
-								Удобнее всего передавать константу __FILE__ в качестве аргумента
+	 *                          Удобнее всего передавать константу __FILE__ в качестве аргумента
 	 * @param null|int $line Строка в файле где вызвана обработка исключения
-								Удобнее всего передавать константу __LINE__ в качестве аргумента
+	 *                       Удобнее всего передавать константу __LINE__ в качестве аргумента
 	 * @return string
 	 */
 	function format_exception(Exception $exception, $trace = false, $file = null, $line = null)
