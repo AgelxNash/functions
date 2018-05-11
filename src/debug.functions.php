@@ -140,3 +140,51 @@ if (!function_exists('call_private_method')) {
 		return $result;
 	}
 }
+
+if (! function_exists('format_exception')) {
+	/**
+	 * Форматировавние исключений для логирования или удобоваримого отображения
+	 *
+	 * @param Exception $exception обрабатываемое исключение
+	 * @param bool $trace включить ли трассировку в отчет
+	 * @param null|string $file Файл в котором вызвана обработка исключения
+								Удобнее всего передавать константу __FILE__ в качестве аргумента
+	 * @param null|int $line Строка в файле где вызвана обработка исключения
+								Удобнее всего передавать константу __LINE__ в качестве аргумента
+	 * @return string
+	 */
+	function format_exception(Exception $exception, $trace = false, $file = null, $line = null)
+	{
+		$msg = get_class($exception);
+
+		$code = $exception->getCode();
+		if (! empty($code)) {
+			$msg .= ':' . $exception->getCode();
+		}
+		$msg .= PHP_EOL;
+
+		$tmp = $exception->getMessage();
+		if (! empty($tmp)) {
+			$msg .= $exception->getMessage();
+			$msg .= PHP_EOL;
+		}
+
+		if ($trace === true) {
+			$msg .= PHP_EOL;
+			$msg .= $exception->getTraceAsString();
+			$msg .= PHP_EOL . PHP_EOL;
+		}
+
+		if ($file !== null) {
+			$msg .= $file;
+			if ($line !== null) {
+				$msg .= ':' . $line;
+			}
+			$msg .= PHP_EOL;
+		}
+
+		$msg .= $exception->getFile() . ':' . $exception->getLine();
+
+		return $msg;
+	}
+}
