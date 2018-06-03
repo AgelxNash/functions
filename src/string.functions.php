@@ -526,3 +526,31 @@ if (! function_exists('first_word')) {
         return is_scalar($string) ? current(explode(" ", $string)) : '';
     }
 }
+
+if (! function_exists('is_real_int')) {
+    /**
+     * Проверяет содержит ли переменная тип integer.
+     * Функция успешно определяет целые числа даже если они хранятся в переменной с типом string
+     *
+     * @param $value
+     * @return bool
+     */
+    function is_real_int($value)
+    {
+        return is_numeric($value) && ! is_float(1 * $value);
+    }
+}
+
+if (! function_exists('is_real_float')) {
+    /**
+     * Проверяет содержит ли переменная тип float.
+     * Функция успешно определяет числа с плавающей точкой даже если они хранятся в переменной с типом string
+     *
+     * @param $value
+     * @return bool
+     */
+    function is_real_float($value)
+    {
+        return is_numeric($value) && is_float(1*$value);
+    }
+}
