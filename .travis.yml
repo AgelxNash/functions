@@ -1,0 +1,22 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+  - nightly
+
+branches:
+  only:
+    - master
+
+before_install:
+  - composer self-update
+
+install: composer install
+
+script:
+  - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+
+notifications:
+  email: modx@agel-nash.ru

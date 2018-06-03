@@ -1,0 +1,47 @@
+filter:
+    paths:
+        - 'src/*'
+    excluded_paths:
+        - 'docs/*'
+        - 'test/*'
+        - 'vendor/*'
+build:
+    environment:
+        php:
+          version: 7.0
+          ini:
+            'date.timezone': 'Europe/Moscow'
+        mysql: false
+        mongodb: false
+        postgresql: false
+        neo4j: false
+        memcached: false
+        redis: false
+        rabbitmq: false
+    nodes:
+        analysis:
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - php-scrutinizer-run
+                    -
+                        command: phpcs-run
+                        use_website_config: true
+                    -
+                        command: 'vendor/bin/phpunit --coverage-clover=coverage.clover'
+                        coverage:
+                            file: 'coverage.clover'
+                            format: 'clover'
+        tests: true
+
+checks:
+    php: true
+
+
+coding_style:
+    php:
+        spaces:
+            around_operators:
+                concatenation: true

@@ -1,19 +1,21 @@
-<?php namespace UtilsFunctions;
+<?php namespace AgelxNash\Functions\Test\UtilsFunctions;
 
-class GeneratePasswordTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class GeneratePasswordTest extends TestCase
 {
-	public function testOnlyChars()
-	{
-		$this->assertRegExp('/[A-Za-z]{10}/', generate_password(10, "Aa"));
-	}
+    public function testOnlyChars()
+    {
+        $this->assertRegExp('/[A-Za-z]{10}/', generate_password(10, "Aa"));
+    }
 
-	public function testOnlyNumbers()
-	{
-		$this->assertRegExp('/\d{8}/', generate_password(8, "0"));
-	}
+    public function testOnlyNumbers()
+    {
+        $this->assertRegExp('/\d{8}/', generate_password(8, "0"));
+    }
 
-	public function testAnyChars()
-	{
-		$this->assertRegExp('/[\W\w]{30}/', generate_password(30, "."));
-	}
+    public function testAnyChars()
+    {
+        $this->assertRegExp('/[\W\w]{30}/', generate_password(30, "."));
+    }
 }

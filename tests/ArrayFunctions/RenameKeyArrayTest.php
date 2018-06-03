@@ -1,106 +1,107 @@
-<?php namespace ArrayFunctions;
+<?php namespace AgelxNash\Functions\Test\ArrayFunctions;
 
-class RenameKeyArrayTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class RenameKeyArrayTest extends TestCase
 {
+    protected $data = [
+        'key' => 'val',
+        'subkey' => [
+            'a' => 'asd',
+            'b' => 'zxc'
+        ]
+    ];
 
-	protected $data = array(
-		'key' => 'val',
-		'subkey' => array(
-			'a' => 'asd',
-			'b' => 'zxc'
-		)
-	);
+    public function testDefaultSuccess()
+    {
+        $out = [
+            '[+key+]' => 'val',
+            '[+subkey.a+]' => 'asd',
+            '[+subkey.b+]' => 'zxc',
+            '[+subkey+]' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '[', ']', '+', '.'));
+    }
 
-	public function testDefaultSuccess()
-	{
-		$out = array(
-			'[+key+]' => 'val',
-			'[+subkey.a+]' => 'asd',
-			'[+subkey.b+]' => 'zxc',
-			'[+subkey+]' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '[', ']', '+', '.'));
-	}
+    public function testNoSeparatorSuccess()
+    {
+        $out = [
+            '[+key+]' => 'val',
+            '[+subkey+]' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '[', ']', '+', ''));
+    }
 
-	public function testNoSeparatorSuccess()
-	{
-		$out = array(
-			'[+key+]' => 'val',
-			'[+subkey+]' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '[', ']', '+', ''));
-	}
+    public function testNoAddPSSuccess()
+    {
+        $out = [
+            '[key]' => 'val',
+            '[subkey.a]' => 'asd',
+            '[subkey.b]' => 'zxc',
+            '[subkey]' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '[', ']', '', '.'));
+    }
 
-	public function testNoAddPSSuccess()
-	{
-		$out = array(
-			'[key]' => 'val',
-			'[subkey.a]' => 'asd',
-			'[subkey.b]' => 'zxc',
-			'[subkey]' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '[', ']', '', '.'));
-	}
+    public function testNoPrefixSuccess()
+    {
+        $out = [
+            'key+]' => 'val',
+            'subkey.a+]' => 'asd',
+            'subkey.b+]' => 'zxc',
+            'subkey+]' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '', ']', '+', '.'));
+    }
 
-	public function testNoPrefixSuccess()
-	{
-		$out = array(
-			'key+]' => 'val',
-			'subkey.a+]' => 'asd',
-			'subkey.b+]' => 'zxc',
-			'subkey+]' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '', ']', '+', '.'));
-	}
+    public function testNoSuffixSuccess()
+    {
+        $out = [
+            '[+key' => 'val',
+            '[+subkey.a' => 'asd',
+            '[+subkey.b' => 'zxc',
+            '[+subkey' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '[', '', '+', '.'));
+    }
 
-	public function testNoSuffixSuccess()
-	{
-		$out = array(
-			'[+key' => 'val',
-			'[+subkey.a' => 'asd',
-			'[+subkey.b' => 'zxc',
-			'[+subkey' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '[', '', '+', '.'));
-	}
+    public function testNoPrefixAndSuffixSuccess()
+    {
+        $out = [
+            'key' => 'val',
+            'subkey.a' => 'asd',
+            'subkey.b' => 'zxc',
+            'subkey' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '', '', '+', '.'));
+    }
 
-	public function testNoPrefixAndSuffixSuccess()
-	{
-		$out = array(
-			'key' => 'val',
-			'subkey.a' => 'asd',
-			'subkey.b' => 'zxc',
-			'subkey' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '', '', '+', '.'));
-	}
+    public function testOnlySeparatorSuccess()
+    {
+        $out = [
+            'key' => 'val',
+            'subkey.a' => 'asd',
+            'subkey.b' => 'zxc',
+            'subkey' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '', '', '', '.'));
+    }
 
-	public function testOnlySeparatorSuccess()
-	{
-		$out = array(
-			'key' => 'val',
-			'subkey.a' => 'asd',
-			'subkey.b' => 'zxc',
-			'subkey' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '', '', '', '.'));
-	}
+    public function testNoSeparatorAndAddPSSuccess()
+    {
+        $out = [
+            '[key]' => 'val',
+            '[subkey]' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '[', ']', '', ''));
+    }
 
-	public function testNoSeparatorAndAddPSSuccess()
-	{
-		$out = array(
-			'[key]' => 'val',
-			'[subkey]' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '[', ']', '', ''));
-	}
-
-	public function testEmptyParametersSuccess()
-	{
-		$out = array(
-			'key' => 'val',
-			'subkey' => ''
-		);
-		$this->assertEquals($out, rename_key_array($this->data, '', '', '', ''));
-	}
+    public function testEmptyParametersSuccess()
+    {
+        $out = [
+            'key' => 'val',
+            'subkey' => ''
+        ];
+        $this->assertEquals($out, rename_key_array($this->data, '', '', '', ''));
+    }
 }
