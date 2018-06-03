@@ -13,21 +13,6 @@ if (! function_exists('value')) {
     }
 }
 
-if (! function_exists('with')) {
-    /**
-     * Синтаксический сахар реализующий возможности PHP 5.4 "получение доступа к члену класса при создании экземпляра"
-     *     PHP >= 5.4: (new test())->run();
-     *     PHP <= 5.3: with(new test())->run();
-     *
-     * @param  mixed $object объект
-     * @return mixed
-     */
-    function with($object)
-    {
-        return $object;
-    }
-}
-
 if (! function_exists('is_serialized')) {
     /**
      * Проверка переменной на предмет наличия в ней сериализованных данных
