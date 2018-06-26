@@ -500,7 +500,7 @@ if (! function_exists('plural')) {
     function plural($number, array $titles = [])
     {
         $cases = [2, 0, 1, 1, 1, 2];
-        $number = (int)$number;
+        $number = abs((int)$number);
         $position = ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[($number % 10 < 5) ? $number % 10 : 5];
         $out = isset($titles[$position]) ? $titles[$position] : '';
 
